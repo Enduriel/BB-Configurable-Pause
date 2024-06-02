@@ -1,0 +1,7 @@
+*.sublime-workspace
+*.sublime-project
+*.code-workspace
+/.bbbuilder
+/.vscode
+brushes/
+gfx/mods/brushes/
