@@ -17,6 +17,10 @@
 ::ConfigurablePause.MH.queue(">mod_msu", ">mod_swifter", function() {
 	::ConfigurablePause.Mod <- ::MSU.Class.Mod(::ConfigurablePause.ID, ::ConfigurablePause.Version, ::ConfigurablePause.Name)
 
+	::ConfigurablePause.Mod.Registry.addModSource(::MSU.System.Registry.ModSourceDomain.GitHub, "https://github.com/Enduriel/BB-Configurable-Pause");
+	::ConfigurablePause.Mod.Registry.setUpdateSource(::MSU.System.Registry.ModSourceDomain.GitHub);
+	::ConfigurablePause.Mod.Registry.addModSource(::MSU.System.Registry.ModSourceDomain.NexusMods, "https://www.nexusmods.com/battlebrothers/mods/730");
+
 	foreach (file in ::IO.enumerateFiles(::ConfigurablePause.ID + "/hooks")) {
 		::include(file);
 	}
