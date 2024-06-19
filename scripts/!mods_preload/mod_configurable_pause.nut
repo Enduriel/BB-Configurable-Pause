@@ -19,7 +19,7 @@
 
 	::ConfigurablePause.Mod.Registry.addModSource(::MSU.System.Registry.ModSourceDomain.GitHub, "https://github.com/Enduriel/BB-Configurable-Pause");
 	::ConfigurablePause.Mod.Registry.setUpdateSource(::MSU.System.Registry.ModSourceDomain.GitHub);
-	::ConfigurablePause.Mod.Registry.addModSource(::MSU.System.Registry.ModSourceDomain.NexusMods, "https://www.nexusmods.com/battlebrothers/mods/730");
+	::ConfigurablePause.Mod.Registry.addModSource(::MSU.System.Registry.ModSourceDomain.NexusMods, "https://www.nexusmods.com/battlebrothers/mods/731");
 
 	foreach (file in ::IO.enumerateFiles(::ConfigurablePause.ID + "/hooks")) {
 		::include(file);
