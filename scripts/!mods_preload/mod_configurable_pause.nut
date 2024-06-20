@@ -1,6 +1,6 @@
 ::ConfigurablePause <- {
 	ID = "mod_configurable_pause",
-	Version = "1.0.2",
+	Version = "1.0.3",
 	Name = "Configurable Pause",
 };
 
