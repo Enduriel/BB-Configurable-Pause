@@ -20,13 +20,16 @@
 		}
 	}
 
-	q.onUpdate = @(__original) function() {
-		local oldPath = this.m.ConfigurablePause_OldPath;
-		local newPath = this.getPlayer().getPath();
-		local oldDest = this.m.ConfigurablePause_OldDestination;
+	q.onMouseInput = @(__original) function( _mouse ) {
+		local oldDest = this.getPlayer().m.Destination;
+		local oldPath = this.getPlayer().getPath();
+		local oldAttack = this.m.AutoAttack;
+		local ret = __original(_mouse);
 		local newDest = this.getPlayer().m.Destination;
+		local newPath = this.getPlayer().getPath();
+		local newAttack = this.m.AutoAttack;
 
-		if ((oldPath != newPath && newPath != null) || (newPath == null && oldDest != newDest && newDest != null)) {
+		if ((oldDest != newDest) || (oldPath != newPath) || (oldAttack != newAttack)) {
 			if (::ConfigurablePause.Mod.ModSettings.getSetting("UnpauseOnNewDestination").getValue()) {
 				if (::World.Assets.isCamping()) {
 					// patch because vanilla code doesn't check this if we are camping
@@ -50,7 +53,18 @@
 				}
 				this.setPause(false);
 			}
-		} else if ((oldPath != null || oldDest != null) && (newPath == null && newDest == null)) {
+		}
+
+		return ret;
+	}
+
+	q.onUpdate = @(__original) function() {
+		local oldPath = this.m.ConfigurablePause_OldPath;
+		local newPath = this.getPlayer().getPath();
+		local oldDest = this.m.ConfigurablePause_OldDestination;
+		local newDest = this.getPlayer().m.Destination;
+
+		if ((oldPath != null || oldDest != null) && (newPath == null && newDest == null)) {
 			if (::ConfigurablePause.Mod.ModSettings.getSetting("PauseOnArrival").getValue()) {
 				this.setPause(true);
 			}
