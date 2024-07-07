@@ -1,4 +1,6 @@
 ::ConfigurablePause.MH.hook("scripts/entity/world/party", function(q) {
+	q.m.ConfigurablePause_LastUpdateTime <- 0.0;
+
 	q.create = @(__original) function() {
 		__original();
 		this.getFlags().set(::ConfigurablePause.FlagID.LastSeenInPlayerVision, 0.0);
@@ -10,7 +12,9 @@
 	}
 
 	q.onUpdate = @(__original) function() {
-		local lastUpdateTime = this.m.LastUpdateTime;
+		local lastUpdateTime = this.m.ConfigurablePause_LastUpdateTime;
+		// vanilla uses ::Time.getVirtualTimeF() which isn't the same thing and we need to know ingame time for reenter vision pause
+		this.m.ConfigurablePause_LastUpdateTime = ::World.getTime().Time;
 		local ret = __original();
 		if (::ConfigurablePause.Mod.ModSettings.getSetting("PauseOnSight").getValue() && !this.m.IsPlayer) {
 			if (this.getFlags().get(::ConfigurablePause.FlagID.LastSeenInPlayerVision) > 0.0) {
@@ -24,7 +28,7 @@
 
 	q.ConfigurablePause_inVisionUpdate <- function( _lastUpdateTime = null ) {
 		if (_lastUpdateTime == null) {
-			_lastUpdateTime = this.m.LastUpdateTime;
+			_lastUpdateTime = this.m.ConfigurablePause_LastUpdateTime;
 		}
 		local worldTime = ::World.getTime().Time;
 		local lastSeen = this.getFlags().get(::ConfigurablePause.FlagID.LastSeenInPlayerVision);
@@ -34,7 +38,7 @@
 		if (this.isAttackable() &&
 		  !this.isAlliedWithPlayer() &&
 		  this.getTile().getDistanceTo(::World.State.getPlayer().getTile()) <= 8 &&
-		  lastSeen < this.m.LastUpdateTime
+		  lastSeen < _lastUpdateTime
 		  ) {
 			::World.State.m.ConfigurablePause_LastPauseOnSeeEnemy = ::Time.getExactTime();
 			::World.State.ConfigurablePause_setPause(true);
