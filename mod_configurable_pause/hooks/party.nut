@@ -17,6 +17,14 @@
 		this.m.ConfigurablePause_LastUpdateTime = ::World.getTime().Time;
 		local ret = __original();
 		if (::ConfigurablePause.Mod.ModSettings.getSetting("PauseOnSight").getValue() && !this.m.IsPlayer) {
+			// this should NEVER happen, but people were reporting issues
+			// probably due to other buggy mods which errored
+			if (!this.getFlags().has(::ConfigurablePause.FlagID.LastSeenInPlayerVision)) {
+				::logError("Entity " + this.getName() + " did not have LastSeenInPlayerVision flag set! This should not be possible, but has been handled gracefully. If you see this in a log, please report this to Enduriel");
+				::logInfo(" SpawnTime: " + this.m.SpawnTime + " WorldTime: " + ::Time.getVirtualTimeF() + " Description: " + this.getDescription());
+				::MSU.Log.printData(this.getFlags().m);
+				this.getFlags().set(::ConfigurablePause.FlagID.LastSeenInPlayerVision, 0.0);
+			}
 			if (this.getFlags().get(::ConfigurablePause.FlagID.LastSeenInPlayerVision) > 0.0) {
 				if (::World.State.getPlayer().isAbleToSee(this)) { // player can see the entity in this update
 					this.ConfigurablePause_inVisionUpdate(lastUpdateTime);
