@@ -10,6 +10,8 @@
 //   settle closing = event screen        (the scenario intro; may be absent)
 //   settle quiet = true
 //   paused after settle = false
+//   legends = absent                     (or its version)
+//   speed settings = CampMult=3 EscortMult=3.75 FastMult=2 NormalMult=1 SuperfastMult=8 VeryFastMult=4
 //   escort wrapper params = 3            (this, _e, _fastEscort)
 //   caravan escort call = ok
 //   caravan escort min, speed = 3.75 3.75
@@ -27,6 +29,8 @@
 //   pause on sight off -> pause requested = false
 //   pause on sight on -> pause requested = true
 //   errors during probe = 0
+// Legends 19.4.22 (passes, 2026-10-21) differs only by its own constants: speed settings CampMult=2.5 EscortMult=4
+// FastMult=2.5, so caravan escort 4 4, fast escort 2.5 2.5, escort 1x 2.5, camp 2.5 2.5, normal/fast/veryfast 1 2.5 4.
 // With topbar_buttons.js (--js): five buttons, l-very-fast-time-button showing time_x4_sw.png, no l-veryfast-time-button.
 //
 // Run (from /home/end/dev/battle_brothers/modern_engine):
@@ -62,6 +66,14 @@ local function call( _k, _f )
 }
 
 p("mods", @() "swifter " + (hasSwifter ? 1 : 0) + " configurable_pause " + (hasPause ? 1 : 0));
+p("legends", @() ::Hooks.hasMod("mod_legends") ? ::Hooks.getMod("mod_legends").getVersionString() : "absent");
+p("speed settings", function() {
+	local keys = [];
+	foreach (k, v in ::Const.World.SpeedSettings) keys.push(k + "=" + v);
+	keys.sort();
+	local s = ""; foreach (k in keys) s += k + " ";
+	return s;
+});
 p("escort wrapper params", @() ws.setEscortedEntity.getinfos().parameters.len());
 p("teleport overloads", function() {
 	local keys = [];
