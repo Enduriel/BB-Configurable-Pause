@@ -13,11 +13,12 @@
 		this.m.Flags.set(::ConfigurablePause.FlagID.WasDay, false)
 	}
 
-	q.setEscortedEntity = @(__original) function( _entity ) {
-		local ret = __original(_entity);
+	q.setEscortedEntity = @(__original) function( _entity, _fastEscort = false ) {
+		local ret = __original(_entity, _fastEscort);
 		if (_entity != null && this.m.EscortedEntity != null) {
 			this.m.Player.m.ConfigurablePause_PausedTile = this.m.EscortedEntity.getTile();
 		}
+		return ret;
 	}
 
 	q.onMouseInput = @(__original) function( _mouse ) {
