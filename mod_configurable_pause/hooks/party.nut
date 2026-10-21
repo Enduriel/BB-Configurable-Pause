@@ -7,7 +7,9 @@
 	}
 
 	q.onDiscovered = @(__original) function() {
-		this.ConfigurablePause_inVisionUpdate();
+		if (::ConfigurablePause.Mod.ModSettings.getSetting("PauseOnSight").getValue()) {
+			this.ConfigurablePause_inVisionUpdate();
+		}
 		return __original();
 	}
 
