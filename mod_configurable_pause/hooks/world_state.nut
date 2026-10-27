@@ -13,12 +13,24 @@
 		this.m.Flags.set(::ConfigurablePause.FlagID.WasDay, false)
 	}
 
-	q.setEscortedEntity = @(__original) function( _entity, _fastEscort = false ) {
-		local ret = __original(_entity, _fastEscort);
-		if (_entity != null && this.m.EscortedEntity != null) {
-			this.m.Player.m.ConfigurablePause_PausedTile = this.m.EscortedEntity.getTile();
+	local setPausedTile = function( _state, _entity ) {
+		if (_entity != null && _state.m.EscortedEntity != null) {
+			_state.m.Player.m.ConfigurablePause_PausedTile = _state.m.EscortedEntity.getTile();
 		}
-		return ret;
+	}
+	// vanilla added _fastEscort to setEscortedEntity in 1.5.2
+	if (::Hooks.getMod("vanilla").getVersion() >= ::Hooks.SQClass.ModVersion("1.5.2-0")) {
+		q.setEscortedEntity = @(__original) function( _entity, _fastEscort = false ) {
+			local ret = __original(_entity, _fastEscort);
+			setPausedTile(this, _entity);
+			return ret;
+		}
+	} else {
+		q.setEscortedEntity = @(__original) function( _entity ) {
+			local ret = __original(_entity);
+			setPausedTile(this, _entity);
+			return ret;
+		}
 	}
 
 	q.onMouseInput = @(__original) function( _mouse ) {
