@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 1.0.8 - 2026-10-27
+
 - Fixed caravan escorts not working on Battle Brothers versions before 1.5.2 ("wrong number of parameters" in world_state.nut).
 
 ## 1.0.7 - 2026-10-21
