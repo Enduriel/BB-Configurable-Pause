@@ -37,7 +37,7 @@
 //   python3 .claude/skills/bb-game-probe/run_probe.py <this> --js <dir>/topbar_buttons.js --mode campaign --seed e2e \
 //     --with-mod held:mod_msu --with-mod <swifter zip> --with-mod <configurable_pause zip> --out <scratch>/runN
 
-::ClaudeProbe.DeferDone = true;
+::BbProbe.DeferDone = true;
 
 local function p( k, f )
 {
@@ -191,7 +191,7 @@ runStep = function( _i )
 {
 	if (_i >= steps.len())
 	{
-		::ClaudeProbe.done();
+		::BbProbe.done();
 		return;
 	}
 	try { steps[_i](); } catch (e) { state.Errors++; ::logInfo("PROBE step " + _i + " = ERROR: " + e); }
